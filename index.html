@@ -8,42 +8,47 @@
 <body>
     
     <script>
-        
-        function searchMenu()
         {
-            const input=document.getElementById("search-here").value.toLowerCase()
-            const nonvegOption =document.querySelectorAll("#foodList option")
-            const vegOption =document.querySelectorAll("#Veg option")
-            const gadgetsOption =document.querySelectorAll("#Gadgets option")
-            
+        
+        const input = document.getElementById("search-here").value.toLowerCase().trim()
+            const result = document.getElementById("result")
+
+            const containers = [
+                { id: "foodList", div:document.querySelector(".Products")},
+                { id: "veg", div:document.querySelector(".Products1")},
+                { id:"Gadgets", div:document.querySelector(".techproduct")}
+            ]
+
             let found=false;
 
-            nonvegOption.forEach(opt=> {
-                if (opt.textContent.toLowerCase() === input){
-                    document.getElementById("result").textContent ="🍗Non veg is available";
-                    found=true
-                }
-            });
-            vegOption.forEach(opt=> {
-                if (opt.textContent.toLowerCase() === input){
-                    document.getElementById("result").textContent="✅ veg is available";
-                    found=true
+            containers.forEach(({ id, div}) => {
+                const options =div.querySelectorAll("option")
+                let hasMatch= false
+
+                options.forEach(opt =>{
+                    
+                    if(opt.textContent.toLowerCase().includes(input) && input !==""){
+                        hasMatch =true
+                        found = true
+                    }
+                })
+                if(hasMatch){
+                    div.style.display="inline-block";
+                    
+                } else{
+                    div.style.display="none"
                     
                 }
-            });
 
-            gadgetsOption.forEach( opt=> {
-                if (opt.textContent.toLowerCase() === input){
-                    document.getElementById("result").textContent="📱Gadgets Available"
-                    found=true
-                }
-            });
-
-
-
-            if(!found){
-                document.getElementById("result").textContent="Not Available See Menu"
+            })
+            if(input===""){
+                containers.forEach(({div}) =>(div.style.display ="inline-block"));
+                result.textContent="";
+                return;
             }
+            result.textContent = found
+            ?"Available place your order"
+            :"Sorry ! Not Available"
             
             
         }
@@ -174,3 +179,4 @@
 </body>
 
 </html>
+
